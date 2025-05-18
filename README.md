@@ -5,15 +5,20 @@ Shared UI components for ReShell microfrontend framework.
 ## Installation
 
 ```bash
-npm install @reshell/ui
-# or
-yarn add @reshell/ui
+# npm
+npm install @re-shell/ui
+
+# yarn
+yarn add @re-shell/ui
+
+# pnpm
+pnpm add @re-shell/ui
 ```
 
 ## Usage
 
 ```jsx
-import { Button, Card } from '@reshell/ui';
+import { Button, Card } from '@re-shell/ui';
 
 function MyComponent() {
   return (
