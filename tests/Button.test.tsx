@@ -36,7 +36,7 @@ describe('Button Component', () => {
     const button = screen.getByTestId('re-shell-button');
     
     // Check it has large size class
-    expect(button.className).toContain('py-3 px-6');
+    expect(button.className).toContain('py-2.5 px-5');
   });
   
   it('renders disabled button', () => {
