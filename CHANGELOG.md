@@ -5,6 +5,63 @@ All notable changes to the `@re-shell/ui` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2024-12-29
+
+### Added
+- **Advanced TypeScript Type System**: Comprehensive type infrastructure for world-class component development
+  - Generic component type system with full type inference
+  - Polymorphic component support with "as" prop pattern
+  - Discriminated union types for component variants
+  - Template literal types for dynamic prop generation
+  - Conditional types for prop dependencies
+  - Mapped types for theme customization
+  - Branded types for CSS units and values
+  - Type predicates and assertion functions
+  - Utility types library for common patterns
+- **Enhanced Button Component**: Refactored with advanced type safety
+  - Polymorphic rendering support
+  - Discriminated union variant system
+  - Type-safe theme integration
+  - Improved accessibility features
+- **Type Exports**: All type definitions now exported from main package
+
+### Changed
+- Button component now uses advanced type system for better type safety
+- Improved TypeScript configuration with strict mode enhancements
+- Enhanced build system with better type generation
+
+### Fixed
+- TypeScript compilation errors in theme type definitions
+- Resolved type conflicts in utility types
+- Fixed polymorphic component type inference issues
+
+## [0.2.2] - 2024-01-20
+
+### Added
+- **Microfrontend-specific components**: NavigationShell, MicrofrontendContainer, SharedStateProvider
+- **Module Federation support**: Complete Webpack Module Federation integration utilities
+- **Feature flags system**: A/B testing and feature toggling capabilities
+- **Error boundaries**: Robust error handling and fallback UI components
+- **Enhanced accessibility**: WCAG 2.1 AA compliance across all components
+- **Advanced form components**: Validation, helper text, and enhanced styling options
+
+### Fixed
+- Version consistency across package.json and source files
+- TypeScript type definitions for all exported components
+- Accessibility improvements for screen readers and keyboard navigation
+
+### Changed
+- Improved documentation with comprehensive examples and usage patterns
+- Enhanced component architecture following atomic design principles
+- Updated styling system with better dark mode support
+
+## [0.2.1] - 2023-12-15
+
+### Fixed
+- Build configuration issues
+- TypeScript declaration file generation
+- Component export consistency
+
 ## [0.2.0] - 2023-09-20
 
 ### Added

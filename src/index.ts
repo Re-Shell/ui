@@ -1,5 +1,8 @@
 // UI package exports
-export const VERSION = '0.2.0';
+export const VERSION = '0.3.0';
+
+// Type System Exports
+export * from './types';
 
 // Basic Components
 export { default as Button } from './Button';
@@ -73,3 +76,83 @@ export type { BreadcrumbProps, BreadcrumbItem } from './Breadcrumb';
 
 export { default as Pagination } from './Pagination';
 export type { PaginationProps } from './Pagination';
+
+// Microfrontend Components
+export { default as MicrofrontendContainer } from './MicrofrontendContainer';
+export type { MicrofrontendContainerProps, MicrofrontendConfig } from './MicrofrontendContainer';
+
+export { default as ErrorBoundary } from './ErrorBoundary';
+export type { ErrorBoundaryProps } from './ErrorBoundary';
+
+export { default as LoadingFallback, SkeletonLoader, CardSkeleton } from './LoadingFallback';
+export type { LoadingFallbackProps } from './LoadingFallback';
+
+export { 
+  FederatedComponent, 
+  FederatedRoute,
+  loadFederatedComponent,
+  withModuleFederation,
+  useFederatedComponent,
+  createLazyFederatedComponent
+} from './ModuleFederation';
+export type { 
+  ModuleFederationConfig, 
+  FederatedComponentProps, 
+  FederatedRouteProps 
+} from './ModuleFederation';
+
+export { 
+  default as SharedStateProvider,
+  useSharedState,
+  useSharedEvents,
+  useCrossMicrofrontendCommunication
+} from './SharedStateProvider';
+export type { 
+  SharedStateProviderProps,
+  SharedStateContextValue,
+  SharedStateEvent,
+  SharedStateListener
+} from './SharedStateProvider';
+
+export {
+  default as NavigationShell,
+  NavigationLink,
+  useNavigation,
+  useRouteGuard
+} from './NavigationShell';
+export type {
+  NavigationShellProps,
+  NavigationContextValue,
+  RouteConfig,
+  NavigationOptions,
+  RouteGuard,
+  NavigationLinkProps
+} from './NavigationShell';
+
+export {
+  default as FeatureFlagProvider,
+  FeatureFlag,
+  useFeatureFlag,
+  useFeatureFlagVariant,
+  withFeatureFlag
+} from './FeatureFlag';
+export type {
+  FeatureFlagProviderProps,
+  FeatureFlagProps,
+  FeatureFlagConfig,
+  FeatureFlagContextValue
+} from './FeatureFlag';
+
+export {
+  default as MicrofrontendRegistry,
+  RegistryStatus,
+  useMicrofrontendRegistry,
+  useAutoRegister
+} from './MicrofrontendRegistry';
+export type {
+  MicrofrontendRegistryProps,
+  MicrofrontendInfo,
+  RegistryConfig,
+  MicrofrontendRegistryContextValue,
+  RegistryStatusProps
+} from './MicrofrontendRegistry';
