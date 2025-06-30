@@ -879,6 +879,102 @@ describe('Component with generated data', () => {
 });
 ```
 
+### Cross-Browser Testing
+
+```ts
+import { CrossBrowserTestRunner } from './cross-browser/matrix.config';
+
+describe('Cross-Browser Compatibility', () => {
+  const runner = new CrossBrowserTestRunner();
+  
+  beforeAll(async () => {
+    await runner.setup({
+      browsers: ['chromium', 'firefox', 'webkit'],
+      viewport: { width: 1280, height: 720 },
+    });
+  });
+  
+  it('renders consistently across browsers', async () => {
+    const results = await runner.runTest(async (page, browserName) => {
+      await page.goto('/components/button');
+      const button = await page.locator('button');
+      expect(button).toBeVisible();
+    });
+    
+    results.forEach((result, browser) => {
+      expect(result.success).toBe(true);
+    });
+  });
+});
+```
+
+### Mobile Device Testing
+
+```ts
+import { MobileGestures, testTouchInteractions } from './mobile/mobile-test-utils';
+
+describe('Mobile Interactions', () => {
+  it('handles swipe gestures', async () => {
+    const gestures = new MobileGestures(page);
+    
+    await gestures.swipe('left', { distance: 200 });
+    expect(await page.locator('.next-panel')).toBeVisible();
+    
+    await gestures.pinch(0.5);
+    expect(await page.locator('.zoomed-out')).toBeVisible();
+  });
+  
+  it('validates touch targets', async () => {
+    const { touchTargets, passed } = await checkMobileAccessibility(page);
+    expect(passed).toBe(true);
+    expect(touchTargets).toHaveLength(0);
+  });
+});
+```
+
+### Stress Testing
+
+```ts
+import { StressTestRunner, stressScenarios } from './stress/stress-test-suite';
+
+describe('Component Stress Tests', () => {
+  const runner = new StressTestRunner();
+  
+  it('handles thousands of instances', async () => {
+    const result = await runner.runScenario({
+      name: 'Heavy Load',
+      instances: 1000,
+      updates: 50,
+      props: { children: 'Stress Test' },
+      threshold: { maxTime: 5000, maxMemory: 200 * 1024 * 1024 }
+    }, Button);
+    
+    expect(result.passed).toBe(true);
+    expect(result.avgTimePerRender).toBeLessThan(5);
+  });
+});
+```
+
+### Mutation Testing
+
+```bash
+# Run mutation testing
+pnpm test:mutation
+
+# View mutation report
+open test-results/mutation/index.html
+```
+
+Configuration in `stryker.config.mjs`:
+```js
+export default {
+  testRunner: 'vitest',
+  mutate: ['src/**/*.{ts,tsx}', '!src/**/*.test.{ts,tsx}'],
+  thresholds: { high: 80, low: 60 },
+  reporters: ['html', 'clear-text', 'progress'],
+};
+```
+
 ## Best Practices
 
 1. **Use Branded Types**: Leverage branded types for CSS values to catch errors at compile time

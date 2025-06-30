@@ -5,6 +5,55 @@ All notable changes to the `@re-shell/ui` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2024-12-30
+
+### Added
+- **Cross-Browser Testing Matrix**: Comprehensive browser compatibility testing
+  - Browser configuration for Chrome, Firefox, Safari, Edge
+  - Mobile device configurations for iOS and Android
+  - Feature detection utilities for browser capabilities
+  - Browser-specific workarounds documentation
+  - Parallel test execution across browsers
+  - Test scenarios for visual consistency and interactions
+- **Mobile Device Testing**: Advanced mobile testing capabilities
+  - Mobile gesture simulator (swipe, pinch, long press, double tap)
+  - Device rotation simulation
+  - Touch interaction testing utilities
+  - Mobile viewport testing across popular devices
+  - Mobile performance metrics (FCP, LCP, TTI, TBT)
+  - Network throttling profiles (3G, 4G, offline)
+  - Mobile accessibility checking for touch targets
+- **Component Stress Testing**: Stress testing suite for performance validation
+  - Stress test runner with configurable scenarios
+  - Sequential, parallel, and batch update strategies
+  - Memory usage monitoring and leak detection
+  - Performance threshold validation
+  - Predefined stress scenarios (basic, heavy, rapid, memory)
+  - DOM manipulation stress testing
+  - Event handler stress testing with thousands of listeners
+- **Automated Screenshot Comparison**: Visual regression with pixel-perfect comparison
+  - Screenshot comparator with baseline management
+  - Pixel-by-pixel comparison using pixelmatch
+  - Configurable difference thresholds
+  - Element masking for dynamic content
+  - Ignore regions for timestamp areas
+  - Multi-browser screenshot comparison
+  - Responsive screenshot testing
+  - Animation frame capture and comparison
+- **Mutation Testing**: Code quality validation through mutation testing
+  - Stryker Mutator configuration for TypeScript
+  - Custom mutation operators for React components
+  - Mutation strategies for components, hooks, and utilities
+  - Mutation score thresholds and reporting
+  - CI/CD integration configuration
+  - Incremental mutation testing support
+  - Comprehensive exclusion patterns
+
+### Changed
+- Enhanced package.json with additional test scripts
+- Added test dependencies for mutation testing and visual comparison
+- Improved test infrastructure with specialized testing tools
+
 ## [0.3.2] - 2024-12-30
 
 ### Added
