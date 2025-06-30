@@ -5,6 +5,45 @@ All notable changes to the `@re-shell/ui` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.4] - 2024-12-30
+
+### Added
+- **Property-Based Testing**: Comprehensive property testing with fast-check
+  - Property test utilities for React components
+  - Common arbitraries for UI testing (CSS values, component props)
+  - Property checks for rendering, accessibility, and events
+  - Component specification framework with invariants
+  - Model-based testing for stateful components
+  - Example property tests for Button component
+- **Test Coverage Reporting**: Advanced coverage reporting with badges
+  - Coverage report parser for LCOV and JSON formats
+  - SVG badge generator with color-coded thresholds
+  - HTML and Markdown report generation
+  - Coverage threshold validation
+  - Integration with CI/CD for automated reporting
+  - Support for Codecov and other coverage services
+- **CI/CD Testing Pipeline**: Comprehensive GitHub Actions workflow
+  - Multi-matrix testing across Node versions
+  - Parallel test execution for different test suites
+  - Cross-platform testing (Ubuntu, Windows, macOS)
+  - Browser matrix testing (Chromium, Firefox, WebKit)
+  - Automated artifact uploads for test results
+  - PR comment integration with test summaries
+  - Conditional mutation testing on main branch
+- **Test Performance Optimization**: Advanced test optimization utilities
+  - Test performance monitoring with detailed metrics
+  - Test parallelization with concurrency control
+  - Intelligent test caching system with TTL
+  - Shared setup optimization to reduce redundancy
+  - Lazy loading for test dependencies
+  - Dynamic timeout optimization based on history
+  - Performance decorators for automatic measurement
+
+### Changed
+- Enhanced package.json with fast-check dependency
+- Improved test infrastructure with performance optimization
+- Added comprehensive CI/CD pipeline configuration
+
 ## [0.3.3] - 2024-12-30
 
 ### Added

@@ -975,6 +975,117 @@ export default {
 };
 ```
 
+### Property-Based Testing
+
+```tsx
+import fc from 'fast-check';
+import { propertyTest, arbitraries } from './property-test-utils';
+
+describe('Component Properties', () => {
+  it('handles any valid CSS color', () => {
+    propertyTest(
+      ColorPicker,
+      fc.record({ color: arbitraries.cssColor }),
+      (props) => {
+        const { container } = render(<ColorPicker {...props} />);
+        const input = container.querySelector('input');
+        expect(input?.value).toBe(props.color);
+      }
+    );
+  });
+  
+  it('maintains invariants across all prop combinations', () => {
+    const buttonSpec = defineComponentSpec(Button, {
+      props: fc.record({
+        disabled: fc.boolean(),
+        loading: fc.boolean(),
+        onClick: fc.option(fc.func(fc.constant(undefined))),
+      }),
+      invariants: [
+        (props, element) => {
+          // Button should be disabled when loading
+          if (props.loading) {
+            return element.hasAttribute('disabled');
+          }
+          return true;
+        },
+      ],
+    });
+    
+    buttonSpec.test('respects loading state invariant');
+  });
+});
+```
+
+### Coverage Reporting
+
+```ts
+import { CoverageReportGenerator, CoverageThresholdValidator } from './coverage-reporter';
+
+// Generate coverage report with badges
+const generator = new CoverageReportGenerator('./coverage', './badges');
+const coverage = await generator.generateReport(coverageData);
+
+// Validate thresholds
+const validation = CoverageThresholdValidator.validate(coverage, {
+  lines: 80,
+  statements: 80,
+  functions: 80,
+  branches: 70,
+  global: 75,
+});
+
+if (!validation.passed) {
+  console.error('Coverage thresholds not met:', validation.failures);
+  process.exit(1);
+}
+```
+
+### CI/CD Integration
+
+```yaml
+# .github/workflows/test.yml
+name: Test Suite
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pnpm test:coverage
+      - uses: codecov/codecov-action@v3
+```
+
+### Test Performance Optimization
+
+```ts
+import { TestPerformanceMonitor, TestCache, measurePerformance } from './test-performance-optimizer';
+
+class ComponentTests {
+  @measurePerformance
+  @cached(60000) // Cache for 1 minute
+  async setupComplexComponent() {
+    // Expensive setup that will be cached
+    return await createComplexTestEnvironment();
+  }
+  
+  async testWithOptimization() {
+    // Run tests in parallel
+    await TestParallelizer.runInParallel([
+      () => this.testScenario1(),
+      () => this.testScenario2(),
+      () => this.testScenario3(),
+    ], 4);
+    
+    // Generate performance report
+    const monitor = TestPerformanceMonitor.getInstance();
+    const report = monitor.generateReport();
+    console.log('Slowest tests:', report.slowestTests);
+  }
+}
+```
+
 ## Best Practices
 
 1. **Use Branded Types**: Leverage branded types for CSS values to catch errors at compile time
