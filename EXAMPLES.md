@@ -1,14 +1,17 @@
 # Re-Shell UI Examples
 
-This document provides comprehensive examples of using Re-Shell UI components with the advanced TypeScript type system introduced in v0.3.0.
+This document provides comprehensive examples of using Re-Shell UI components with the advanced TypeScript type system introduced in v0.3.0 and enhanced in v0.3.1.
 
 ## Table of Contents
 
 1. [Type System Examples](#type-system-examples)
-2. [Polymorphic Components](#polymorphic-components)
-3. [Component Variants](#component-variants)
-4. [Theme Customization](#theme-customization)
-5. [Advanced Patterns](#advanced-patterns)
+2. [CSS Validation & Type Safety](#css-validation--type-safety)
+3. [Context System](#context-system)
+4. [Design Tokens](#design-tokens)
+5. [Polymorphic Components](#polymorphic-components)
+6. [Component Variants](#component-variants)
+7. [Theme Customization](#theme-customization)
+8. [Advanced Patterns](#advanced-patterns)
 
 ## Type System Examples
 
@@ -75,6 +78,229 @@ import { Button, ButtonVariant } from '@re-shell/ui';
 <Button variant={{ variant: 'link', underline: true }}>
   Learn more
 </Button>
+```
+
+## CSS Validation & Type Safety
+
+### Compile-time CSS Validation
+
+```tsx
+import { css, cssVar, getCSSVar, setCSSVar } from '@re-shell/ui';
+
+// Type-safe CSS object with validation
+const styles = css({
+  width: '100px',        // Valid
+  height: '50rem',       // Valid
+  margin: 'auto',        // Valid
+  padding: '2em',        // Valid
+  color: '#3B82F6',      // Valid
+  backgroundColor: 'rgb(59, 130, 246)', // Valid
+  // invalid: '123abc',  // Error: Invalid CSS value
+});
+
+// CSS Variables with type safety
+const primaryColor = cssVar('primary-color');
+setCSSVar(primaryColor, '#3B82F6');
+const color = getCSSVar(primaryColor);
+
+// Media queries and responsive styles
+import { ResponsiveStyle } from '@re-shell/ui';
+
+const responsiveBox: ResponsiveStyle<{ padding: string }> = {
+  padding: '1rem',
+  '@media (min-width: 768px)': {
+    padding: '2rem',
+  },
+  '@media (prefers-color-scheme: dark)': {
+    padding: '1.5rem',
+  },
+};
+
+// Keyframe animations
+import { keyframes } from '@re-shell/ui';
+
+const fadeIn = keyframes({
+  from: { opacity: 0 },
+  to: { opacity: 1 },
+  '50%': { opacity: 0.5 },
+});
+```
+
+## Context System
+
+### Type-Safe Context Creation
+
+```tsx
+import { createContext, createCompoundContext, createAsyncContext } from '@re-shell/ui';
+
+// Simple context
+const [ThemeProvider, useTheme] = createContext<{ mode: 'light' | 'dark' }>('Theme');
+
+// Compound context with state and actions
+interface TodoState {
+  todos: string[];
+}
+
+interface TodoActions {
+  addTodo: (todo: string) => void;
+  removeTodo: (index: number) => void;
+}
+
+const [TodoProvider, useTodoState, useTodoActions] = createCompoundContext<TodoState, TodoActions>('Todo');
+
+// Async context for loading states
+interface User {
+  id: string;
+  name: string;
+}
+
+const [UserProvider, useUserContext, useUserData, useUserLoading, useUserError] = createAsyncContext<User>('User');
+
+// Usage with error boundaries
+function App() {
+  return (
+    <ThemeProvider value={{ mode: 'dark' }}>
+      <TodoProvider value={{ 
+        state: { todos: [] }, 
+        actions: { 
+          addTodo: () => {}, 
+          removeTodo: () => {} 
+        } 
+      }}>
+        <UserProvider value={{ status: 'loading' }}>
+          <MyComponent />
+        </UserProvider>
+      </TodoProvider>
+    </ThemeProvider>
+  );
+}
+
+// Multi-provider composer
+import { composeProviders } from '@re-shell/ui';
+
+const AppProviders = composeProviders(
+  ThemeProvider,
+  TodoProvider,
+  UserProvider
+);
+
+function App() {
+  return (
+    <AppProviders>
+      <MyComponent />
+    </AppProviders>
+  );
+}
+```
+
+## Design Tokens
+
+### Type Generation from Design Tokens
+
+```tsx
+import { 
+  DesignTokens, 
+  TokenTypeGenerator, 
+  TokenTransformer,
+  createTokenGetter 
+} from '@re-shell/ui';
+
+// Define your design tokens
+const tokens: DesignTokens = {
+  colors: {
+    'primary.500': { 
+      name: 'primary.500', 
+      value: '#3B82F6', 
+      type: 'color' 
+    },
+    'gray.100': { 
+      name: 'gray.100', 
+      value: '#F3F4F6', 
+      type: 'color' 
+    },
+  },
+  spacing: {
+    sm: { name: 'sm', value: '0.5rem', type: 'spacing' },
+    md: { name: 'md', value: '1rem', type: 'spacing' },
+    lg: { name: 'lg', value: '1.5rem', type: 'spacing' },
+  },
+  typography: {
+    body: {
+      name: 'body',
+      value: {
+        fontFamily: 'Inter',
+        fontSize: '16px',
+        fontWeight: 400,
+        lineHeight: 1.5,
+      },
+      type: 'typography',
+    },
+  },
+  shadows: {
+    sm: { 
+      name: 'sm', 
+      value: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', 
+      type: 'shadow' 
+    },
+  },
+  radii: {
+    md: { name: 'md', value: '0.375rem', type: 'radius' },
+  },
+  animations: {
+    fast: {
+      name: 'fast',
+      value: { duration: '150ms', easing: 'ease-out' },
+      type: 'animation',
+    },
+  },
+};
+
+// Generate TypeScript types
+const types = TokenTypeGenerator.generateThemeType(tokens);
+
+// Transform to theme object
+const theme = TokenTransformer.tokensToTheme(tokens);
+
+// Type-safe token getter
+const getToken = createTokenGetter(tokens);
+const primaryColor = getToken.color('primary.500'); // Type-safe!
+const spacing = getToken.spacing('md');            // Type-safe!
+```
+
+### Prop Spreading Utilities
+
+```tsx
+import { splitProps, mergeProps, getPropGetter } from '@re-shell/ui';
+
+// Split component props from HTML props
+function MyButton(props: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  const [componentProps, htmlProps] = splitProps(props, ['variant', 'size', 'loading']);
+  
+  return (
+    <button {...htmlProps} className={getClassName(componentProps)}>
+      {props.children}
+    </button>
+  );
+}
+
+// Merge props with proper precedence
+const mergedProps = mergeProps(
+  defaultProps,
+  userProps,
+  { className: 'additional-class' }
+);
+
+// Get prop getter for compound components
+function useAccordion() {
+  const getTriggerProps = getPropGetter({
+    onClick: handleToggle,
+    'aria-expanded': isExpanded,
+  });
+  
+  return {
+    getTriggerProps,
+  };
+}
 ```
 
 ## Polymorphic Components

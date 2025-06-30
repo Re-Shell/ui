@@ -2,7 +2,7 @@
 
 A comprehensive, accessible, and customizable React component library for the Re-Shell microfrontend framework. Built with TypeScript and modern web standards.
 
-**Current Version**: 0.3.0 - Advanced TypeScript type system, polymorphic components, and world-class type safety infrastructure.
+**Current Version**: 0.3.1 - Complete type safety infrastructure with CSS validation, context providers, and design token system.
 
 ## 🌟 Overview
 

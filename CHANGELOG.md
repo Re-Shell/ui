@@ -5,6 +5,43 @@ All notable changes to the `@re-shell/ui` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2024-12-29
+
+### Added
+- **Type Safety Infrastructure**: Completed all type safety utilities
+  - Compile-time CSS-in-TS validation with strict property checking
+  - Type-safe context providers with error boundaries
+  - Type-safe prop spreading utilities for component composition
+  - JSDoc integration for enhanced IDE support and documentation
+  - Type generation from design tokens with validation
+  - Automated type testing framework with compile-time assertions
+- **CSS Validation System**: Runtime and compile-time CSS validation
+  - CSS property validators with unit checking
+  - Type-safe CSS object creator
+  - CSS variable management with type safety
+  - Media query and keyframe type helpers
+- **Context System**: Advanced context creation patterns
+  - Type-safe context factory with error handling
+  - Context selectors for performance optimization
+  - Compound contexts for complex state management
+  - Multi-provider composer for clean component trees
+  - Async context support for loading states
+- **Design Token System**: Type-safe design token management
+  - Token type generation from design system
+  - Token transformation and validation
+  - Type-safe token getters with IntelliSense
+  - Token-to-theme conversion utilities
+
+### Changed
+- Enhanced type exports with all new utilities included
+- Improved build process with better type checking
+
+### Fixed
+- Context provider JSX syntax errors
+- Type inference issues in prop spreading
+- Token getter type constraints
+- Type test assertion helpers
+
 ## [0.3.0] - 2024-12-29
 
 ### Added
