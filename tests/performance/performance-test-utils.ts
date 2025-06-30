@@ -1,5 +1,7 @@
 import { performance, PerformanceObserver } from 'perf_hooks';
 import { vi } from 'vitest';
+import { render } from '@testing-library/react';
+import React from 'react';
 
 /**
  * Re-Shell UI Performance Testing Utilities
@@ -84,6 +86,10 @@ export class PerformanceTestHarness {
 
   getMetrics(): PerformanceMetrics {
     return { ...this.metrics };
+  }
+  
+  trackRender() {
+    this.renderCount++;
   }
 
   assertPerformance(thresholds: Partial<PerformanceMetrics>) {
@@ -245,21 +251,35 @@ export async function stressTest(
   const harness = new PerformanceTestHarness();
   harness.start();
 
-  const instances: any[] = [];
+  const Component = component;
+  
+  // Initial render
+  harness.trackRender();
+  const { container } = render(
+    React.createElement('div', {},
+      Array.from({ length: options.instances }, (_, i) =>
+        React.createElement(Component, { 
+          key: i, 
+          ...(options.props || {}) 
+        })
+      )
+    )
+  );
 
-  // Create instances
-  for (let i = 0; i < options.instances; i++) {
-    instances.push({
-      component,
-      props: options.props || {},
-    });
-  }
-
-  // Perform updates
+  // Perform updates by re-rendering
   for (let u = 0; u < options.updates; u++) {
-    for (let i = 0; i < instances.length; i++) {
-      instances[i].props = options.updateProps ? options.updateProps(i) : { ...instances[i].props, key: u };
-    }
+    harness.trackRender();
+    render(
+      React.createElement('div', {},
+        Array.from({ length: options.instances }, (_, i) =>
+          React.createElement(Component, { 
+            key: i, 
+            ...(options.updateProps ? options.updateProps(i) : { ...options.props, updateKey: u })
+          })
+        )
+      ),
+      { container }
+    );
   }
 
   harness.stop();

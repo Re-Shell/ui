@@ -129,6 +129,10 @@ export const Button = forwardRef(function Button<E extends React.ElementType = '
   // Get variant classes based on discriminated union
   const getVariantClasses = () => {
     const v = variant as ButtonVariant;
+    if (!v || typeof v === 'string') {
+      // Default to primary variant
+      return 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 active:bg-blue-800';
+    }
     switch (v.variant) {
       case 'primary':
         return 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 active:bg-blue-800';

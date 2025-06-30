@@ -1,6 +1,8 @@
 import fc from 'fast-check';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import React from 'react';
+import { expect, it } from 'vitest';
+import { vi } from 'vitest';
 
 /**
  * Property-based testing utilities for Re-Shell UI
@@ -94,7 +96,7 @@ export function propertyTest<P>(
   return fc.assert(
     fc.property(propsArbitrary, (props) => {
       try {
-        const { container } = render(<Component {...props} />);
+        const { container } = render(React.createElement(Component, props));
         
         // Component should render without throwing
         expect(container).toBeTruthy();
@@ -123,7 +125,7 @@ export function propertyTest<P>(
 export const propertyChecks = {
   // Component renders without errors
   rendersWithoutError: <P extends {}>(Component: React.ComponentType<P>) => (props: P) => {
-    const { container } = render(<Component {...props} />);
+    const { container } = render(React.createElement(Component, props));
     return container.firstChild !== null;
   },
   
@@ -134,7 +136,7 @@ export const propertyChecks = {
   ) => (props: P) => {
     const hasAllRequired = requiredProps.every(prop => props[prop] !== undefined);
     if (!hasAllRequired) {
-      expect(() => render(<Component {...props} />)).toThrow();
+      expect(() => render(React.createElement(Component, props))).toThrow();
       return true;
     }
     return true;
@@ -142,7 +144,7 @@ export const propertyChecks = {
   
   // Accessibility properties are valid
   accessibilityValid: <P extends Record<string, any>>(Component: React.ComponentType<P>) => (props: P) => {
-    const { container } = render(<Component {...props} />);
+    const { container } = render(React.createElement(Component, props));
     const element = container.firstChild as HTMLElement;
     
     if (props.role) {
@@ -171,7 +173,7 @@ export const propertyChecks = {
       }
     });
     
-    const { container } = render(<Component {...mockedProps} />);
+    const { container } = render(React.createElement(Component, mockedProps));
     
     // Simulate events based on prop names
     Object.keys(mocks).forEach(prop => {
@@ -204,7 +206,7 @@ export function defineComponentSpec<P>(
     test(description: string, options?: Parameters<typeof propertyTest>[3]) {
       it(description, () => {
         propertyTest(Component, spec.props, (props) => {
-          const { container } = render(<Component {...props} />);
+          const { container } = render(React.createElement(Component, props));
           const element = container.firstChild as HTMLElement;
           
           if (spec.invariants) {
@@ -220,7 +222,7 @@ export function defineComponentSpec<P>(
       if (spec.examples) {
         spec.examples.forEach((example, index) => {
           it(`renders example ${index + 1}`, () => {
-            const { container } = render(<Component {...example} />);
+            const { container } = render(React.createElement(Component, example));
             expect(container.firstChild).toBeTruthy();
           });
         });

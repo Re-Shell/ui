@@ -54,7 +54,7 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^5.0.0",
+    "@axe-core/playwright": "^4.10.2",
     "@faker-js/faker": "^8.0.0",
     "@playwright/test": "^1.40.0",
     "@stryker-mutator/core": "^7.0.0",
