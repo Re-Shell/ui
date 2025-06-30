@@ -5,6 +5,79 @@ All notable changes to the `@re-shell/ui` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2024-12-30
+
+### Added
+- **Comprehensive Testing Framework**: World-class testing infrastructure
+  - Vitest setup with coverage reporting and performance monitoring
+  - Custom test utilities with user event integration
+  - Mock utilities for console, performance, and browser APIs
+  - Test harness creation for component testing
+  - Enhanced global test setup with accessibility matchers
+- **Visual Regression Testing**: Playwright-based visual testing
+  - Visual test utilities for cross-browser screenshot comparison
+  - Viewport testing across mobile, tablet, and desktop
+  - Theme variation testing for light/dark/high-contrast modes
+  - Interaction state testing (hover, focus, active, disabled)
+  - Animation sequence capture and testing
+  - Visual diff configuration with thresholds
+  - Example button visual test suite
+- **Component Interaction Testing**: Advanced user interaction testing
+  - Interaction test harness with user event simulation
+  - Keyboard navigation flow testing
+  - Form interaction testing with validation
+  - Drag and drop testing utilities
+  - Gesture recognition testing (swipe, pinch, long press)
+  - Complex interaction scenarios with step-by-step verification
+  - Multi-user interaction testing for collaborative features
+  - Interaction performance measurement
+  - Example button interaction test suite
+- **Accessibility Testing Automation**: Comprehensive a11y testing
+  - Axe-core integration for automated accessibility scanning
+  - Keyboard navigation testing utilities
+  - ARIA attribute verification helpers
+  - Color contrast checking utilities
+  - Focus indicator testing
+  - Screen reader announcement testing
+  - WCAG compliance level configurations
+  - Component-specific accessibility tests (button, form, modal)
+- **Performance Testing Harness**: Performance monitoring and benchmarking
+  - Performance test harness with detailed metrics
+  - Render performance measurement across multiple runs
+  - Memory usage profiling and leak detection
+  - Benchmark utilities for function execution
+  - Component stress testing with multiple instances
+  - Animation performance testing with FPS tracking
+  - Bundle size analysis utilities
+  - Performance budget assertions
+  - Example button performance test suite
+- **Cross-Browser Testing**: Browser compatibility testing
+  - Cross-browser test runner for Chromium, Firefox, and WebKit
+  - Browser feature detection utilities
+  - Browser compatibility matrix testing
+  - Browser performance comparison tools
+  - Browser-specific quirks documentation
+  - Cross-browser screenshot comparison
+- **Test Data Generation**: Comprehensive test data utilities
+  - User data generation with faker.js
+  - Product and form data generators
+  - Nested data structure generation
+  - Edge case data for boundary testing
+  - Component prop combination generation
+  - Stress test data for large datasets
+  - Accessibility test data with ARIA labels
+  - Internationalization test data with multilingual content
+
+### Changed
+- Enhanced package.json with testing dependencies
+- Improved test setup with comprehensive mocking and custom matchers
+- Updated build configuration for optimal test performance
+
+### Fixed
+- Test environment setup for browser APIs
+- Type definitions for test utilities
+- Mock implementations for window and element methods
+
 ## [0.3.1] - 2024-12-29
 
 ### Added

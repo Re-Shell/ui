@@ -708,6 +708,177 @@ if (status === 'error') {
 }
 ```
 
+## Testing Examples
+
+### Unit Testing with Vitest
+
+```tsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Button } from '@re-shell/ui';
+
+describe('Button Component', () => {
+  it('handles click events', async () => {
+    const handleClick = vi.fn();
+    const user = userEvent.setup();
+    
+    render(<Button onClick={handleClick}>Click me</Button>);
+    
+    await user.click(screen.getByRole('button'));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+  
+  it('is accessible', () => {
+    const { container } = render(<Button>Accessible Button</Button>);
+    expect(container.firstChild).toBeAccessible();
+  });
+});
+```
+
+### Visual Regression Testing
+
+```ts
+import { test, expect } from '@playwright/test';
+import { testInViewports, testThemeVariations } from './visual-test-utils';
+
+test.describe('Button Visual Tests', () => {
+  test('renders consistently across browsers', async ({ page }) => {
+    await page.goto('/components/button');
+    await expect(page.locator('button')).toHaveScreenshot('button-default.png');
+  });
+  
+  test('responsive behavior', async ({ page }) => {
+    await testInViewports(page, '/components/button', ['mobile', 'tablet', 'desktop']);
+  });
+  
+  test('theme variations', async ({ page }) => {
+    await testThemeVariations(page, ['light', 'dark', 'high-contrast']);
+  });
+});
+```
+
+### Interaction Testing
+
+```tsx
+import { createInteractionTest, testKeyboardFlow } from './interaction-test-utils';
+
+describe('Form Interaction', () => {
+  it('supports keyboard navigation', async () => {
+    const { container } = render(
+      <form>
+        <Input name="email" />
+        <Input name="password" type="password" />
+        <Button type="submit">Submit</Button>
+      </form>
+    );
+    
+    await testKeyboardFlow(container, [
+      'input[name="email"]',
+      'input[name="password"]',
+      'button[type="submit"]'
+    ]);
+  });
+  
+  it('handles complex interactions', async () => {
+    const scenario = new InteractionScenario(container);
+    
+    await scenario
+      .addStep('Fill email', async () => {
+        await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
+      })
+      .addStep('Submit form', async () => {
+        await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+      })
+      .verify('Form submitted', () => {
+        expect(handleSubmit).toHaveBeenCalled();
+      })
+      .run();
+  });
+});
+```
+
+### Accessibility Testing
+
+```tsx
+import { a11y, componentA11y } from './accessibility';
+
+describe('Accessibility', () => {
+  it('meets WCAG 2.1 AA standards', async () => {
+    const { container } = render(<Card>Content</Card>);
+    
+    await a11y.checkA11y(container, {
+      rules: wcagLevels.AA.rules,
+      detailedReport: true
+    });
+  });
+  
+  it('button is fully accessible', async () => {
+    render(<Button>Click me</Button>);
+    await componentA11y.button(document.body, 'button');
+  });
+  
+  it('has proper focus indicators', async () => {
+    const { container } = render(<Button>Focus me</Button>);
+    await a11y.checkFocusIndicators(container, 'button');
+  });
+});
+```
+
+### Performance Testing
+
+```tsx
+import { PerformanceTestHarness, measureRenderPerformance } from './performance-test-utils';
+
+describe('Performance', () => {
+  it('renders within budget', async () => {
+    const harness = new PerformanceTestHarness();
+    
+    harness.start();
+    render(<Button>Test</Button>);
+    harness.stop();
+    
+    harness.assertPerformance({
+      renderTime: 10,
+      totalTime: 20,
+      memoryUsage: { delta: 1024 * 1024 }
+    });
+  });
+  
+  it('handles stress test', async () => {
+    const metrics = await stressTest(Button, {
+      instances: 1000,
+      updates: 100,
+      props: { children: 'Stress Test' }
+    });
+    
+    expect(metrics.totalTime).toBeLessThan(1000);
+  });
+});
+```
+
+### Test Data Generation
+
+```tsx
+import { generateUser, generateFormData, edgeCases } from './test-data-generator';
+
+describe('Component with generated data', () => {
+  it('handles random user data', () => {
+    const users = generateArray(generateUser, 100);
+    
+    render(<UserList users={users} />);
+    expect(screen.getAllByRole('listitem')).toHaveLength(100);
+  });
+  
+  it('handles edge cases', () => {
+    Object.values(edgeCases.strings).forEach(str => {
+      const { container } = render(<Input value={str} />);
+      expect(container.querySelector('input')).toHaveValue(str);
+    });
+  });
+});
+```
+
 ## Best Practices
 
 1. **Use Branded Types**: Leverage branded types for CSS values to catch errors at compile time
@@ -716,5 +887,7 @@ if (status === 'error') {
 4. **Build Polymorphic Components**: Create flexible components that can render as any element
 5. **Type Your Themes**: Use the theme type system for consistent, type-safe styling
 6. **Create Type-Safe Patterns**: Build reusable patterns with full type inference
+7. **Test Comprehensively**: Use all testing tools - unit, visual, interaction, a11y, and performance
+8. **Automate Testing**: Integrate tests into CI/CD pipeline for continuous quality assurance
 
 These examples demonstrate the power of Re-Shell UI's advanced type system. For more examples and patterns, check out our [Storybook](https://re-shell-ui.netlify.app) or [GitHub repository](https://github.com/Re-Shell/reshell-monorepo).

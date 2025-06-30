@@ -2,7 +2,7 @@
 
 A comprehensive, accessible, and customizable React component library for the Re-Shell microfrontend framework. Built with TypeScript and modern web standards.
 
-**Current Version**: 0.3.1 - Complete type safety infrastructure with CSS validation, context providers, and design token system.
+**Current Version**: 0.3.2 - World-class testing infrastructure with visual regression, interaction, accessibility, and performance testing.
 
 ## 🌟 Overview
 
@@ -372,11 +372,45 @@ pnpm run build
 # Run tests with coverage
 pnpm run test
 
+# Run visual regression tests
+pnpm playwright test
+
+# Run interaction tests
+pnpm test:interaction
+
+# Run performance tests
+pnpm test:performance
+
 # Run linting and fix issues
 pnpm run lint
 
 # Clean build artifacts
 pnpm run clean
+```
+
+### Testing Infrastructure
+
+Re-Shell UI includes a world-class testing infrastructure:
+
+- **Unit Testing**: Comprehensive component testing with Vitest
+- **Visual Regression**: Playwright-based screenshot comparison across browsers
+- **Interaction Testing**: User event simulation and complex interaction scenarios
+- **Accessibility Testing**: Automated WCAG compliance checking with axe-core
+- **Performance Testing**: Render performance benchmarking and memory profiling
+- **Cross-Browser Testing**: Automated testing in Chromium, Firefox, and WebKit
+
+```bash
+# Run all tests
+pnpm test
+
+# Run with coverage
+pnpm test:coverage
+
+# Run specific test suite
+pnpm test button
+
+# Run in watch mode
+pnpm test:watch
 ```
 
 ### Development Workflow
