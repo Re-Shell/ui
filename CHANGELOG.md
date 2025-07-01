@@ -5,6 +5,85 @@ All notable changes to the `@re-shell/ui` package will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2024-12-30
+
+### Added
+- **Quality Metrics System**: Comprehensive quality tracking and enforcement
+  - Quality metrics dashboard component for visualizing code health
+  - Bundle size analyzer with treemap visualization and budget alerts
+  - Performance benchmarking system for measuring component performance
+  - Accessibility scoring with WCAG compliance checking
+  - TypeScript type coverage reporter with unsafe pattern detection
+  - Code complexity analyzer with cyclomatic and cognitive metrics
+  - Documentation coverage tracker for API documentation
+  - API stability tracking and breaking change detection
+  - Quality gate automation for CI/CD enforcement
+  - Centralized metrics export through index file
+
+### Features
+- **Bundle Size Analysis**
+  - Real-time bundle size tracking with gzip compression metrics
+  - Treemap visualization for understanding code distribution
+  - Budget alerts when size exceeds thresholds
+  - Per-chunk analysis with dynamic import detection
+  - Detailed size reports with largest chunks identification
+
+- **Performance Benchmarking**
+  - Component render performance measurement
+  - Memory usage profiling and leak detection
+  - Web Vitals metrics (FCP, LCP, TTI, TBT, CLS)
+  - Benchmark runner with warmup and statistical analysis
+  - Performance report generation with actionable insights
+
+- **Accessibility Scoring**
+  - Automated WCAG 2.1 compliance checking
+  - Axe-core integration for comprehensive auditing
+  - Categorized issue reporting (ARIA, color, keyboard, etc.)
+  - Component-specific accessibility testing
+  - Detailed remediation guidance for violations
+
+- **Type Coverage Reporting**
+  - Percentage-based type coverage metrics
+  - Detection of any, unknown, and implicit any usage
+  - File-by-file coverage analysis
+  - Unsafe type pattern identification
+  - TypeScript compiler settings validation
+
+- **Code Complexity Analysis**
+  - Cyclomatic complexity calculation
+  - Cognitive complexity metrics
+  - Halstead metrics for code maintainability
+  - Function-level complexity reporting
+  - Complexity distribution visualization
+
+- **Documentation Coverage**
+  - Public API documentation tracking
+  - Category-based coverage (components, hooks, utilities, types)
+  - Example code coverage metrics
+  - Undocumented export detection
+  - Documentation quality scoring
+
+- **API Stability Tracking**
+  - Breaking change detection between versions
+  - API stability levels (stable, beta, experimental)
+  - Semver compliance validation
+  - Version compatibility matrix
+  - Migration guide generation
+
+- **Quality Gate Automation**
+  - Configurable quality thresholds
+  - Multi-metric enforcement (code, performance, accessibility)
+  - CI/CD integration with fail-fast behavior
+  - Detailed violation reporting
+  - Customizable gate configurations
+
+### Developer Experience
+- Easy integration with existing CI/CD pipelines
+- Comprehensive TypeScript types for all metrics
+- Middleware patterns for common use cases
+- Detailed reporting in multiple formats
+- Performance-optimized metric collection
+
 ## [0.4.0] - 2024-12-30
 
 ### 🎉 Major Release: Foundation Phase Complete

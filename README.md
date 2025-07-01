@@ -2,7 +2,7 @@
 
 A comprehensive, accessible, and customizable React component library for the Re-Shell microfrontend framework. Built with TypeScript and modern web standards.
 
-**Current Version**: 0.4.0 - 🎉 Foundation Phase Complete! World-class TypeScript type system and comprehensive testing infrastructure with 85 tasks completed.
+**Current Version**: 0.4.1 - 📊 Quality Metrics System! Comprehensive quality tracking and enforcement with bundle size analysis, performance benchmarking, accessibility scoring, and more.
 
 ## 🌟 Overview
 
@@ -38,6 +38,17 @@ A comprehensive, accessible, and customizable React component library for the Re
 - 🔄 **Dynamic Loading** - Lazy loading and code splitting support
 - 📡 **Event-Driven Architecture** - Inter-microfrontend communication patterns
 - 🎛️ **Feature Flags** - A/B testing and feature toggling capabilities
+
+### Quality Metrics System (New in v0.4.1)
+- 📊 **Quality Dashboard** - Real-time visualization of code health metrics
+- 📦 **Bundle Size Analysis** - Track and optimize bundle sizes with budget alerts
+- 🚀 **Performance Benchmarking** - Measure component performance and memory usage
+- ♿ **Accessibility Scoring** - Automated WCAG compliance checking
+- 🔍 **Type Coverage Reporting** - Monitor TypeScript type safety across codebase
+- 🧮 **Complexity Analysis** - Track code complexity and maintainability
+- 📚 **Documentation Coverage** - Ensure comprehensive API documentation
+- 🔒 **API Stability Tracking** - Detect breaking changes between versions
+- ✅ **Quality Gate Automation** - Enforce quality standards in CI/CD
 
 ## 🏆 Version 0.4.0 Achievements
 
@@ -445,6 +456,47 @@ pnpm test button
 
 # Run in watch mode
 pnpm test:watch
+```
+
+### Quality Metrics Integration
+
+Re-Shell UI now includes comprehensive quality metrics tools:
+
+```tsx
+import { 
+  QualityDashboard,
+  createQualityMetricsSuite,
+  runQualityChecks
+} from '@re-shell/ui/metrics';
+
+// Create quality metrics suite
+const metrics = createQualityMetricsSuite({
+  bundleSizeBudget: 200 * 1024, // 200KB
+  minTypeCoverage: 90,
+  maxComplexity: 10,
+  minDocCoverage: 80,
+  minAccessibilityScore: 95
+});
+
+// Run quality checks in CI/CD
+const results = await runQualityChecks({
+  skipPerformance: false,
+  qualityGateConfig: {
+    enabled: true,
+    failOnViolation: true,
+    thresholds: {
+      bundleSize: { maxSize: 500 * 1024 },
+      performance: { minScore: 75 },
+      accessibility: { minScore: 90 }
+    }
+  }
+});
+
+// Display quality dashboard
+<QualityDashboard 
+  metrics={results.metrics}
+  onRefresh={() => runQualityChecks()}
+/>
 ```
 
 ### Development Workflow

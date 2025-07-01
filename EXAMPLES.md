@@ -1,27 +1,342 @@
 # Re-Shell UI Examples
 
-This document provides comprehensive examples of using Re-Shell UI components with the world-class TypeScript type system completed in v0.4.0. The foundation phase is now complete with 85 tasks accomplished, providing unparalleled type safety and developer experience.
+This document provides comprehensive examples of using Re-Shell UI components with the quality metrics system introduced in v0.4.1. Building on the foundation phase completed in v0.4.0, we now have comprehensive quality tracking and enforcement tools.
 
-## 🎉 Version 0.4.0 Highlights
+## 🎉 Version 0.4.1 Highlights
 
-With the completion of the foundation phase, Re-Shell UI now offers:
+Building on the world-class type system from v0.4.0, Re-Shell UI now includes:
 
-- **World-Class Type Safety**: Every prop, event, and ref is fully typed
-- **Compile-Time CSS Validation**: Catch styling errors before runtime
-- **Polymorphic Components**: Components that adapt to any HTML element
-- **Property-Based Testing**: Automated testing that finds edge cases
-- **Performance Optimized**: Tree-shakeable with minimal bundle impact
+- **Quality Metrics Dashboard**: Real-time visualization of code health
+- **Bundle Size Analysis**: Track and optimize bundle sizes with budget alerts
+- **Performance Benchmarking**: Measure component performance and memory usage
+- **Accessibility Scoring**: Automated WCAG compliance checking
+- **Type Coverage Reporting**: Monitor TypeScript type safety across codebase
+- **API Stability Tracking**: Detect breaking changes between versions
 
 ## Table of Contents
 
-1. [Type System Examples](#type-system-examples)
-2. [CSS Validation & Type Safety](#css-validation--type-safety)
-3. [Context System](#context-system)
-4. [Design Tokens](#design-tokens)
-5. [Polymorphic Components](#polymorphic-components)
-6. [Component Variants](#component-variants)
-7. [Theme Customization](#theme-customization)
-8. [Advanced Patterns](#advanced-patterns)
+1. [Quality Metrics System](#quality-metrics-system)
+2. [Type System Examples](#type-system-examples)
+3. [CSS Validation & Type Safety](#css-validation--type-safety)
+4. [Context System](#context-system)
+5. [Design Tokens](#design-tokens)
+6. [Polymorphic Components](#polymorphic-components)
+7. [Component Variants](#component-variants)
+8. [Theme Customization](#theme-customization)
+9. [Advanced Patterns](#advanced-patterns)
+
+## Quality Metrics System
+
+### Bundle Size Analysis
+
+Monitor and optimize your bundle sizes:
+
+```tsx
+import { BundleAnalyzer, createBundleSizeReport } from '@re-shell/ui/metrics';
+
+// Create bundle analyzer
+const analyzer = new BundleAnalyzer('./dist', 200 * 1024); // 200KB budget
+
+// Analyze bundle
+const metrics = await analyzer.analyze();
+
+// Check budget alerts
+const alerts = analyzer.checkBudget(metrics);
+alerts.forEach(alert => {
+  console.log(`${alert.severity}: ${alert.message}`);
+});
+
+// Generate report
+const report = createBundleSizeReport(metrics);
+console.log(report);
+
+// React component integration
+function BundleSizeDashboard() {
+  const [metrics, setMetrics] = useState(null);
+  
+  useEffect(() => {
+    analyzer.analyze().then(setMetrics);
+  }, []);
+  
+  if (!metrics) return <Spinner />;
+  
+  return (
+    <Card>
+      <CardHeader>
+        <h3>Bundle Size Analysis</h3>
+        <Badge variant={metrics.budgetUsage > 100 ? 'error' : 'success'}>
+          {metrics.budgetUsage}% of budget
+        </Badge>
+      </CardHeader>
+      <CardBody>
+        <div>Total Size: {formatBytes(metrics.totalSize)}</div>
+        <div>Gzipped: {formatBytes(metrics.gzipped)}</div>
+        <Progress value={metrics.budgetUsage} max={100} />
+      </CardBody>
+    </Card>
+  );
+}
+```
+
+### Performance Benchmarking
+
+Benchmark component performance:
+
+```tsx
+import { 
+  benchmarkComponent, 
+  PerformanceBenchmark,
+  createPerformanceReport 
+} from '@re-shell/ui/metrics';
+
+// Benchmark a component
+const result = await benchmarkComponent(
+  'Button',
+  () => {
+    render(<Button>Click me</Button>);
+  },
+  {
+    iterations: 100,
+    warmup: 10
+  }
+);
+
+console.log(`Average render time: ${result.average}ms`);
+console.log(`95th percentile: ${result.p95}ms`);
+
+// Collect comprehensive metrics
+const benchmark = new PerformanceBenchmark();
+const metrics = await benchmark.collectMetrics();
+
+// Generate performance report
+const report = createPerformanceReport(metrics);
+console.log(report);
+
+// React hook for performance monitoring
+function usePerformanceMonitor(componentName: string) {
+  const benchmark = useRef(new PerformanceBenchmark());
+  
+  useEffect(() => {
+    benchmark.current.startMeasure(componentName);
+    
+    return () => {
+      const duration = benchmark.current.endMeasure(componentName);
+      console.log(`${componentName} render time: ${duration}ms`);
+    };
+  });
+}
+```
+
+### Accessibility Scoring
+
+Automated accessibility testing:
+
+```tsx
+import { 
+  AccessibilityScorer,
+  createAccessibilityMiddleware 
+} from '@re-shell/ui/metrics';
+
+// Create accessibility scorer
+const scorer = new AccessibilityScorer({
+  wcagLevel: 'AA',
+  runOnly: ['wcag2aa', 'wcag21aa']
+});
+
+// Audit a component
+scorer.setPage(page); // Puppeteer/Playwright page
+const metrics = await scorer.audit('.my-component');
+
+// Generate report
+const report = scorer.generateReport(metrics);
+console.log(report);
+
+// Test middleware for integration tests
+const a11y = createAccessibilityMiddleware();
+
+test('Button is accessible', async () => {
+  const { page } = await browser.newPage();
+  a11y.beforeEach(page);
+  
+  await page.goto('/button-demo');
+  
+  // This will throw if violations found
+  await a11y.expectNoViolations();
+  
+  // Check specific score
+  await a11y.expectScore(90);
+});
+```
+
+### Type Coverage Reporting
+
+Monitor TypeScript type safety:
+
+```tsx
+import { 
+  TypeCoverageReporter,
+  createTypeCoverageMiddleware 
+} from '@re-shell/ui/metrics';
+
+// Create reporter
+const reporter = new TypeCoverageReporter('./tsconfig.json');
+
+// Analyze type coverage
+const metrics = reporter.analyze();
+console.log(`Type coverage: ${metrics.percentage}%`);
+console.log(`Any types: ${metrics.any}`);
+console.log(`Unknown types: ${metrics.unknown}`);
+
+// Find unsafe patterns
+const unsafePatterns = reporter.findUnsafePatterns();
+unsafePatterns.forEach(pattern => {
+  console.log(`${pattern.type} in ${pattern.file}:${pattern.line}`);
+  console.log(`Suggestion: ${pattern.suggestion}`);
+});
+
+// CI/CD middleware
+const typeCoverage = createTypeCoverageMiddleware(90); // 90% minimum
+
+// In your CI pipeline
+await typeCoverage.check(); // Throws if below threshold
+```
+
+### Quality Gate Automation
+
+Enforce quality standards in CI/CD:
+
+```tsx
+import { 
+  QualityGate,
+  createQualityGateMiddleware,
+  defaultQualityGateConfig 
+} from '@re-shell/ui/metrics';
+
+// Custom quality gate configuration
+const config = {
+  ...defaultQualityGateConfig,
+  thresholds: {
+    bundleSize: {
+      maxSize: 300 * 1024, // 300KB
+      maxChunks: 15
+    },
+    performance: {
+      minScore: 80,
+      maxFCP: 1500,
+      maxTTI: 3500
+    },
+    accessibility: {
+      minScore: 95,
+      maxViolations: 0,
+      requireWCAG: 'AA'
+    },
+    typeCoverage: {
+      minPercentage: 90,
+      maxAnyTypes: 5
+    },
+    complexity: {
+      maxAverage: 5,
+      maxFunction: 10
+    },
+    documentation: {
+      minCoverage: 85,
+      requirePublicAPI: true
+    }
+  }
+};
+
+// Create quality gate
+const gate = new QualityGate(config);
+
+// Run all checks
+const result = await gate.runAllChecks();
+
+if (!result.qualityGate.passed) {
+  console.error('Quality gate failed!');
+  result.qualityGate.violations.forEach(v => {
+    console.error(`${v.metric}: ${v.message}`);
+  });
+  process.exit(1);
+}
+
+// Generate report
+const report = gate.generateReport(result);
+console.log(report);
+```
+
+### Quality Dashboard Component
+
+Display all metrics in a dashboard:
+
+```tsx
+import { QualityDashboard } from '@re-shell/ui/metrics';
+import { useState, useEffect } from 'react';
+
+function QualityMetricsPage() {
+  const [metrics, setMetrics] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  const loadMetrics = async () => {
+    setLoading(true);
+    try {
+      const gate = new QualityGate(defaultQualityGateConfig);
+      const result = await gate.runAllChecks();
+      setMetrics(result.metrics);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    loadMetrics();
+  }, []);
+  
+  if (loading) {
+    return (
+      <div className="flex justify-center p-8">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+  
+  return (
+    <div className="p-4">
+      <div className="mb-4 flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Quality Metrics</h1>
+        <Button onClick={loadMetrics} leftIcon="refresh">
+          Refresh
+        </Button>
+      </div>
+      
+      <QualityDashboard 
+        metrics={metrics}
+        onRefresh={loadMetrics}
+      />
+      
+      {/* Custom metric cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <Card>
+          <CardHeader>
+            <h3>Recent Trends</h3>
+          </CardHeader>
+          <CardBody>
+            {/* Add trend charts here */}
+          </CardBody>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <h3>Action Items</h3>
+          </CardHeader>
+          <CardBody>
+            {/* Add improvement suggestions */}
+          </CardBody>
+        </Card>
+      </div>
+    </div>
+  );
+}
+```
 
 ## Type System Examples
 
